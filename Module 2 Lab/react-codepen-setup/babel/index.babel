@@ -1,0 +1,121 @@
+function Question(props){
+  var style = {
+    color: "purple"
+    }
+  return <h2 style={style}>What is {props.num1} {props.operator} {props.num2} ?</h2>
+}
+
+function Choice(props){
+  var style = {
+    color: "blue",
+    height: 75,
+    width: 400,
+    fontSize: 30
+    }
+  return <button style={style} id={props.id} onClick={() => props.handleClick(props.choice)}>{props.choice}</button>
+}
+
+function ChoiceOptions(props){
+  var style = {clear: "both"}
+  return (
+    <div style={style}>
+      <Choice choice={props.choicearray[0]} handleClick={props.handleClick}/><br/>
+      <Choice choice={props.choicearray[1]} handleClick={props.handleClick}/><br/>
+      <Choice choice={props.choicearray[2]} handleClick={props.handleClick}/><br/>
+      <Choice choice={props.choicearray[3]} handleClick={props.handleClick}/><br/>
+    </div>
+  )
+}
+
+function Feedback(props){
+  return <h2 style={props.style}>{props.label}: {props.value}</h2>
+}
+
+class TriviaApp extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = this.nextTrivia()
+    //initialize the number of correct and incorrect guesses to 0
+    this.state.correct = 0
+    this.state.incorrect = 0
+    //binding is necessary to make `this` point to the correct object
+    this.handleClick = this.handleClick.bind(this)
+    this.restart = this.restart.bind(this)
+  }
+  
+  //a method that resets the state and ultimately starts a new game
+  restart(){
+    var newState = this.nextTrivia()
+    newState.correct = 0
+    newState.incorrect = 0
+    this.setState(newState)
+  }
+  
+  //a helper method that populates the properties for the state of the Trivia App
+  nextTrivia(){
+    var num1 = Math.floor((Math.random() * 10) + 1)
+    var num2 = Math.floor((Math.random() * 10) + 1)
+    var operatorArray = ["+", "-", "*", "/"]
+    //choose an operator at random to do an arithmetic operation with num1 and num2
+    var operator = operatorArray[Math.floor(Math.random()*operatorArray.length)]
+    var result = Math.floor(eval(num1 + operator + num2))
+    var choicearray = this.uniqueElementArray(num1, num2, result)
+    return {num1: num1, num2: num2, operator: operator, result: result, choicearray: choicearray.sort(() => Math.random() * 2 - 1)}   //choicearray.sort(() => Math.random() * 2 - 1) => shuffles around the array elements in choicearray 
+  }
+  
+  //a helper method for the nextTrivia() method that returns an array containing result and 3 other unique elements 
+  uniqueElementArray(num1, num2, result) {
+    var array = []
+    //counter that keeps track of the number of iterations of the while loop
+    var count = 0
+    do {
+    array = [result, Math.floor(Math.random()*num1), Math.floor(Math.random()*num2), Math.floor(Math.random()*(num1+num2))]
+      count += 1
+    } while ( (count < 2500) && ((new Set(array)).size !== array.length) )
+      /*
+      ((new Set(array)).size === array.length) only when the array has unique elements
+      */
+      //if we have iterated through the while loop 2500 times and still failed to generate
+      //a unique element array, we will manually create an array to avoid infinite looping
+      if (count >= 2500){
+        array = [result-1, result, result+1, result+2]    
+      }
+    
+    return array
+  }
+  
+  handleClick(value){
+    // console.log("value: " + value)
+    if (this.state.result === value) {
+      this.state.correct += 1
+    } else {
+      this.state.incorrect += 1
+    }
+    var newState = this.nextTrivia()
+    newState.correct = this.state.correct
+    newState.incorrect = this.state.incorrect
+    this.setState(newState)
+  }
+  
+  render(){
+    var style = {
+      textAlign:"center",
+      // display:"flex"
+    };
+    return (
+      <div style={style}>
+        <h1>Trivia</h1>
+        <Question num1={this.state.num1} num2={this.state.num2} operator={this.state.operator}/>
+        <Feedback label="Incorrect" value={this.state.incorrect} style={{float: "left", color: "red"}}/>
+        <Feedback label="Correct" value={this.state.correct} style={{float: "right", color: "green"}}/>
+        <button onClick={this.restart}>Restart</button>
+        <ChoiceOptions choicearray={this.state.choicearray} handleClick={this.handleClick}/>
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(
+    <TriviaApp/>,
+    document.getElementById("root")
+)

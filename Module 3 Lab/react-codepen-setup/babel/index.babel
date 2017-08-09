@@ -1,0 +1,160 @@
+class ControlledInput extends React.Component{
+  render(){
+    return (
+      <div>
+        {this.props.label}<br/>
+        <input type="text" name={this.props.name} value={this.props.value} onChange={this.props.handleChange}/>
+      </div>
+    )
+  }
+}
+
+/*
+  "If you want to only trigger validation when the input looses focus you can use onBlur"
+  source: stackoverflow [https://stackoverflow.com/questions/37609049/how-to-correctly-catch-change-focus-out-event-on-text-input-in-react-js]
+*/
+class ControlledSelect extends React.Component{
+  render(){
+    // console.log("select: " + this.props.value)
+    var options = this.props.options.map((option) => {
+      return <option value={option}>{option}</option>
+    })
+    return (
+      <div>
+        {this.props.label}<br/>
+        <select name={this.props.name} value={this.props.value} onChange={this.props.handleChange}>
+          <option value={this.props.defaultValue}>{this.props.defaultValue}</option>
+          {options}
+        </select>
+      </div>
+    )
+  }
+}
+
+class ControlledCheck extends React.Component{
+  render(){
+    return (
+      <div>
+        <input type="checkbox" name={this.props.name} value={this.props.value} checked={this.props.checked} onChange={this.props.handleChangeChecked}/>{this.props.label}<br/>
+        </div>
+        )
+    }
+}
+
+/*
+please note that the use of firstName, lastName, activity and restrictions attributes of record to populate the table row data indicates that the GenerateTable class is tightly coupled to the App class. Further work is required to investigate this and remove the coupling from these two classes
+*/
+class GenerateTable extends React.Component{
+  render(){
+    //if there is not data passed in, just return an empty div instead of returning headers in an empty table
+    if (this.props.data.length == 0) {
+      return <div></div>
+    }
+    
+    var formattedHeader = this.props.header.map( (headerTitle) => {
+      return <th>{headerTitle}</th>
+    })
+    var formattedData = this.props.data.map( (record, index) => {
+      return (
+        <tr>
+          <td><button onClick={() => this.props.dataFunction(index)}>{this.props.dataFunctionSymbol}</button></td>
+          <td>{record.firstName}</td>
+          <td>{record.lastName}</td>
+          <td>{record.activity}</td>
+          <td>{record.restrictions}</td>
+        </tr>
+        )
+    })
+    return (
+      <table style={this.props.style}>
+        <tr>
+          {formattedHeader}
+        </tr>
+        {formattedData}
+      </table>
+    )
+  }
+}
+
+class Registration extends React.Component{
+  constructor(props){
+    super(props)
+    /*
+    the restrictionX property is set to false so that when this property is passed to the checked property of a button, the button is unchecked
+    */
+    this.state = {firstName: "", lastName: "", activity: "", restriction1: false, restriction2: false, restriction3: false, registrationInfo: []}
+    this.handleChange = this.handleChange.bind(this)
+    //the handleChangeChecked method is bound in a different way as seen on lines 143, 144, and 145
+    // this.handleChangeChecked = this.handleChangeChecked.bind(this)
+    this.registerStudent = this.registerStudent.bind(this)
+    //the unRegisterStudent method is bound in a different way as seen on line 148
+    // this.unRegisterStudent = this.unRegisterStudent.bind(this)
+  } 
+  
+  handleChange(event){
+    this.setState({[event.target.name]: event.target.value}, () => {
+      console.log("handleChange event changes are now updated!")
+    })
+    
+  }
+ 
+  handleChangeChecked(event){
+    // if (event.target.name === "check1") {
+    //   console.log(event.target.name)
+    // }
+    // console.log(event.target.name + "---" + event.target.value + "---" + event.target.checked)
+//     this.setState({[event.target.name]: event.target.checked}, () => {
+          // console.log("checked: " + event.target.checked)
+
+//     this.setState({[event.target.name]: event.target.value}, (event) => {
+      // console.log("checked: " + event.target.checked)
+//     })
+    this.setState({[event.target.name]: event.target.checked}, () => {
+      console.log("handleChangeChecked event changes are now updated!")
+    })
+  }
+  
+  registerStudent(){
+    // console.log("before activity: " + this.state.activity)
+    var studentName = this.state.firstName.charAt(0).toUpperCase() + this.state.firstName.slice(1).toLowerCase() + " " + this.state.lastName.charAt(0).toUpperCase() + this.state.lastName.slice(1).toLowerCase()
+    var registrationInfoCopy = this.state.registrationInfo.slice()
+    var restrictions = (this.state.restriction1? "a" : "") + (this.state.restriction2? "b" : "") + (this.state.restriction3?  "c" : "")
+    registrationInfoCopy.push({firstName: this.state.firstName.charAt(0).toUpperCase() + this.state.firstName.slice(1).toLowerCase(), lastName: this.state.lastName.charAt(0).toUpperCase() + this.state.lastName.slice(1).toLowerCase(), activity: this.state.activity, restrictions: restrictions})
+    this.setState({firstName: "", lastName: "", activity: "", restriction1: false, restriction2: false, restriction3: false, registrationInfo: registrationInfoCopy}, () => {
+      // console.log("after activity: " + this.state.activity)
+      console.log("Registered student " + studentName)
+    })
+  }
+  
+  unRegisterStudent(index){
+    // console.log("splicing: " + index)
+    var studentName = this.state.registrationInfo[index].firstName + " " + this.state.registrationInfo[index].lastName
+    var registrationInfoCopy = this.state.registrationInfo.slice()
+    registrationInfoCopy.splice(index, 1)
+    this.setState({registrationInfo: registrationInfoCopy}, () => {
+      console.log("Unregistered student " + studentName)
+    })   
+  }
+  
+  render(){
+    return (
+      <div>
+         <ControlledInput label="First Name" name="firstName" value={this.state.firstName} handleChange={this.handleChange}/>
+          <ControlledInput label="Last Name" name="lastName" value={this.state.lastName} handleChange={this.handleChange}/>
+          <ControlledSelect label="Select Activity" name="activity" defaultValue="" value={this.state.activity} options={["Science Lab", "Swimming", "Cooking", "Painting"]} handleChange={this.handleChange}/>
+          Check all that apply:<br/>
+          <ControlledCheck label="Dietary Restrictions" name="restriction1" value="a" checked={this.state.restriction1} handleChangeChecked={this.handleChangeChecked.bind(this)}/>
+          <ControlledCheck label="Physical Disabilities" name="restriction2" value="b" checked={this.state.restriction2} handleChangeChecked={this.handleChangeChecked.bind(this)}/>
+          <ControlledCheck label="Medical Needs" name="restriction3" value="c" checked={this.state.restriction3} handleChangeChecked={this.handleChangeChecked.bind(this)}/>
+          <button onClick = {this.registerStudent}>Submit</button>
+        <br/>
+        <GenerateTable style={{margin: "0px auto", textAlign: "center"}} header={["Remove", "First Name", "Last Name", "Activity", "Restrictions"]} data={this.state.registrationInfo} dataFunction={this.unRegisterStudent.bind(this)} dataFunctionSymbol="X"/>
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(
+  <Registration/>,
+  document.getElementById("root")
+)

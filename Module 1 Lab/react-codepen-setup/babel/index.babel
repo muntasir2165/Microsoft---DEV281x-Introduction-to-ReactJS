@@ -1,0 +1,97 @@
+function TitleTag(props){
+  if (props.subtitle) {
+        return (
+          <div>
+            <h2>{props.title}</h2>
+            <p>{props.subtitle}</p>
+          </div>
+         )
+  } else {
+    return <h2>{props.title}</h2>
+  }
+}
+
+function Checkbox(props){
+  if (props.checked) {
+    return (
+      <div> {props.label} 
+        <input type={props.type} id={props.id} name={props.name} value={props.value} checked/>
+      </div>
+    )
+  } else {
+    return (
+      <div> {props.label} 
+        <input type={props.type} id={props.id} name={props.name} value={props.value}/>
+      </div>
+    )    
+  }
+}
+      
+function DropdownMenu(props){
+  return (
+    <div> 
+      <p> {props.label} 
+        <select>
+          <option value={props.value[0]}>{props.value[0]}</option>
+          <option value={props.value[1]}>{props.value[1]}</option>
+          <option value={props.value[2]}>{props.value[2]}</option>
+          <option value={props.value[3]}>{props.value[3]}</option>
+        </select>
+      </p>
+    </div>
+  )
+}
+
+function TransportationType(props){
+    return (
+        <ul>
+        <table>
+            <tr>
+                <th>Year</th>
+                <th>Model</th>
+                <th>Price</th>
+                <th>Buy</th>
+            </tr>
+            <tr>
+                <td>{props.year}</td>
+                <td>{props.model}</td>
+                <td>{'$' + props.price}</td>
+                <td><button>Buy Now</button></td>
+            </tr>
+        </table>
+    </ul>
+  )
+}
+
+function ReactTransportation(props){
+  return (
+    <div>
+      <TitleTag title="Welcome to React Transportation" subtitle="The best place to buy vehicles online"/>
+      <TitleTag title="Choose Options"/>
+      <Checkbox label="New Only" type="checkbox" id="coding" name="interest" value="coding" checked={true}/>
+      <DropdownMenu label="Select Type" value={["All", "Cars", "Trucks", "Convertibles"]}/>
+      <div>
+        <TitleTag title="Cars"/>
+        <TransportationType year="2013" model="A" price="32000"/>
+        <TransportationType year="2011" model="B" price="4400"/>
+        <TransportationType year="2016" model="B" price="15500"/>
+        <TitleTag title="Trucks"/>
+        <TransportationType year="2014" model="D" price="18000"/>
+        <TransportationType year="2013" model="E" price="5200"/>
+        <TitleTag title="Convertibles"/>
+        <TransportationType year="2009" model="F" price="2000"/>
+        <TransportationType year="2010" model="G" price="6000"/>
+        <TransportationType year="2012" model="H" price="12500"/>
+        <TransportationType year="2017" model="M" price="50000"/>
+      </div>
+    </div>
+  )
+}
+      
+ReactDOM.render(
+
+    // <div>Hello World</div>,
+    <ReactTransportation/>,
+    document.getElementById("root")
+
+)

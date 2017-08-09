@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!-- saved from url=(0101)https://s.codepen.io/boomerang/iFrameKey-fd0f9d38-6394-d7da-1c56-b8c9fd1a1f69/index.html?editors=1010 -->
+<html class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js"></script><script src="./events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js"></script><script src="./css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js"></script><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="https://production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico"><link rel="mask-icon" type="" href="https://production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111"><link rel="canonical" href="https://codepen.io/muntasir2165/pen/ZJWyrz?editors=1010">
+
+
+<style class="cp-pen-styles"></style></head><body>
+<div id="root"><div data-reactroot=""><div><h2>Welcome to React Transportation</h2><p>The best place to buy vehicles online</p></div><h2>Choose Options</h2><div><!-- react-text: 7 --> <!-- /react-text --><!-- react-text: 8 -->New Only<!-- /react-text --><input type="checkbox" id="coding" name="interest" value="coding"></div><div><p><!-- react-text: 12 --> <!-- /react-text --><!-- react-text: 13 -->Select Type<!-- /react-text --><select><option value="All">All</option><option value="Cars">Cars</option><option value="Trucks">Trucks</option><option value="Convertibles">Convertibles</option></select></p></div><div><h2>Cars</h2><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2013</td><td>A</td><td>$32000</td><td><button>Buy Now</button></td></tr></table></ul><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2011</td><td>B</td><td>$4400</td><td><button>Buy Now</button></td></tr></table></ul><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2016</td><td>B</td><td>$15500</td><td><button>Buy Now</button></td></tr></table></ul><h2>Trucks</h2><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2014</td><td>D</td><td>$18000</td><td><button>Buy Now</button></td></tr></table></ul><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2013</td><td>E</td><td>$5200</td><td><button>Buy Now</button></td></tr></table></ul><h2>Convertibles</h2><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2009</td><td>F</td><td>$2000</td><td><button>Buy Now</button></td></tr></table></ul><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2010</td><td>G</td><td>$6000</td><td><button>Buy Now</button></td></tr></table></ul><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2012</td><td>H</td><td>$12500</td><td><button>Buy Now</button></td></tr></table></ul><ul><table><tr><th>Year</th><th>Model</th><th>Price</th><th>Buy</th></tr><tr><td>2017</td><td>M</td><td>$50000</td><td><button>Buy Now</button></td></tr></table></ul></div></div></div>
+<script src="./stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js"></script><script src="./react.min.js"></script><script src="./react-dom.min.js"></script>
+<script>"use strict";
+
+function TitleTag(props) {
+  if (props.subtitle) {
+    return React.createElement(
+      "div",
+      null,
+      React.createElement(
+        "h2",
+        null,
+        props.title
+      ),
+      React.createElement(
+        "p",
+        null,
+        props.subtitle
+      )
+    );
+  } else {
+    return React.createElement(
+      "h2",
+      null,
+      props.title
+    );
+  }
+}
+
+function Checkbox(props) {
+  if (props.checked) {
+    return React.createElement(
+      "div",
+      null,
+      " ",
+      props.label,
+      React.createElement("input", { type: props.type, id: props.id, name: props.name, value: props.value, checked: true })
+    );
+  } else {
+    return React.createElement(
+      "div",
+      null,
+      " ",
+      props.label,
+      React.createElement("input", { type: props.type, id: props.id, name: props.name, value: props.value })
+    );
+  }
+}
+
+function DropdownMenu(props) {
+  return React.createElement(
+    "div",
+    null,
+    React.createElement(
+      "p",
+      null,
+      " ",
+      props.label,
+      React.createElement(
+        "select",
+        null,
+        React.createElement(
+          "option",
+          { value: props.value[0] },
+          props.value[0]
+        ),
+        React.createElement(
+          "option",
+          { value: props.value[1] },
+          props.value[1]
+        ),
+        React.createElement(
+          "option",
+          { value: props.value[2] },
+          props.value[2]
+        ),
+        React.createElement(
+          "option",
+          { value: props.value[3] },
+          props.value[3]
+        )
+      )
+    )
+  );
+}
+
+function TransportationType(props) {
+  return React.createElement(
+    "ul",
+    null,
+    React.createElement(
+      "table",
+      null,
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "th",
+          null,
+          "Year"
+        ),
+        React.createElement(
+          "th",
+          null,
+          "Model"
+        ),
+        React.createElement(
+          "th",
+          null,
+          "Price"
+        ),
+        React.createElement(
+          "th",
+          null,
+          "Buy"
+        )
+      ),
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          null,
+          props.year
+        ),
+        React.createElement(
+          "td",
+          null,
+          props.model
+        ),
+        React.createElement(
+          "td",
+          null,
+          '$' + props.price
+        ),
+        React.createElement(
+          "td",
+          null,
+          React.createElement(
+            "button",
+            null,
+            "Buy Now"
+          )
+        )
+      )
+    )
+  );
+}
+
+function ReactTransportation(props) {
+  return React.createElement(
+    "div",
+    null,
+    React.createElement(TitleTag, { title: "Welcome to React Transportation", subtitle: "The best place to buy vehicles online" }),
+    React.createElement(TitleTag, { title: "Choose Options" }),
+    React.createElement(Checkbox, { label: "New Only", type: "checkbox", id: "coding", name: "interest", value: "coding", checked: true }),
+    React.createElement(DropdownMenu, { label: "Select Type", value: ["All", "Cars", "Trucks", "Convertibles"] }),
+    React.createElement(
+      "div",
+      null,
+      React.createElement(TitleTag, { title: "Cars" }),
+      React.createElement(TransportationType, { year: "2013", model: "A", price: "32000" }),
+      React.createElement(TransportationType, { year: "2011", model: "B", price: "4400" }),
+      React.createElement(TransportationType, { year: "2016", model: "B", price: "15500" }),
+      React.createElement(TitleTag, { title: "Trucks" }),
+      React.createElement(TransportationType, { year: "2014", model: "D", price: "18000" }),
+      React.createElement(TransportationType, { year: "2013", model: "E", price: "5200" }),
+      React.createElement(TitleTag, { title: "Convertibles" }),
+      React.createElement(TransportationType, { year: "2009", model: "F", price: "2000" }),
+      React.createElement(TransportationType, { year: "2010", model: "G", price: "6000" }),
+      React.createElement(TransportationType, { year: "2012", model: "H", price: "12500" }),
+      React.createElement(TransportationType, { year: "2017", model: "M", price: "50000" })
+    )
+  );
+}
+
+ReactDOM.render(
+
+// <div>Hello World</div>,
+React.createElement(ReactTransportation, null), document.getElementById("root"));
+//# sourceURL=pen.js
+</script>
+</body></html>
